@@ -1,33 +1,13 @@
 ##########################################################
 ##########################################################
 ###########                                 ##############
-#########     Starts here: CV 31 aÒos big farms  #########
+#########     Starts here: CV 31 a√±os big farms  #########
 ###########                                 ##############
 ##########################################################
 ##########################################################
-#setwd("Z:\\Adrian\\2020\\Chp3_data")
-setwd("C:\\Users\\Adrian\\Google Drive\\doutorado\\2020\\dataChp3")
-spatial<-read.csv("CVz31anos.csv", sep=","); nrow(spatial)
-spatialC<-read.csv("CVz31anos_sept2021.csv", sep=","); nrow(spatialC)
-setwd("C:\\Users\\Adrian\\Google Drive\\doutorado\\2021\\Chp3_papers")
-spatialB<-read.csv("CVz31anos_antigo.csv", sep=","); nrow(spatialB)
 
-################################################
-##3What the fu*** is going on:###########
-nrow(spatialC)-nrow(spatialB)
-subsetdiffer = spatialC[spatialC$codigo_ibg %in% spatialB$codigo_ibg,] 
-nrow(subsetdiffer)
-subsetdiffer$cc<-paste(subsetdiffer$crop, subsetdiffer$codigo_ibg)
-spatialB$cc<-paste(spatialB$crop, spatialB$codigo_ibg)
-spatial$cc<-paste(spatial$crop, spatial$codigo_ibg)
-
-sb = subsetdiffer[!subsetdiffer$cc=="cafe 2910909",] ###Only 
-
-plot(spatialB$CV~sb$CV)
 #################################################
 setwd("C:\\Users\\Adrian\\Google Drive\\doutorado\\2020\\dataChp3")
-#spatial<-read.csv("CVz31anos.csv", sep=",")     ##Large crop area (>1000 ha) per crop
-#spatial<-read.csv("CVz31anos_sept2021.csv", sep=","); nrow(spatial)
 spatial<-read.csv("CVz31anos_052022.csv", sep=","); nrow(spatial)
 head(spatial); hist(spatial$CV); summary(spatial$CV)
 
@@ -80,7 +60,7 @@ summary(spatial$mathe)
 #####Identifying each coffee species as different crops:
 canefora<-spatial[spatial$crop=="cafe"&spatial$contribution=="essential",]; nrow(canefora) #47
 arabica<-spatial[spatial$crop=="cafe"&spatial$contribution=="modest",]; nrow(arabica) #274
-##Substituting cafÈ for each coffee species
+##Substituting caf√© for each coffee species
 spatial[spatial$crop=="cafe"&spatial$contribution=="essential",3]<-"C.canephora"
 spatial[spatial$crop=="cafe"&spatial$contribution=="modest",3]<-"C.arabica"
 
@@ -96,7 +76,7 @@ cultivos<-summaryBy(FC+P_dependency~crop+contribution, FUN=mean, data=spatial)
 # Distr de la var de respuesta CV (manual) y CV2 (summaryBy)
 ##############################################################
 require(fitdistrplus)
-spatial<-spatial[complete.cases(spatial),]; spatial<-subset(spatial, spatial$CV>0) ##hay 69 0, sin variaciÛn en el tiempo
+spatial<-spatial[complete.cases(spatial),]; spatial<-subset(spatial, spatial$CV>0) ##hay 69 0, sin variaci√≥n en el tiempo
 spatial2<-spatial[spatial$contribution!="essential",];nrow(spatial); nrow(spatial2)
 respuesta<-1/(spatial$CV)
 respuesta<-spatial$z
@@ -115,13 +95,13 @@ par(mfrow=c(1,1))
 #############Best distribution Gamma despite eliminating non normal distributions###############################
 
 
-##avaliemos la correlaciÛn de las variables restantes
+##avaliemos la correlaci√≥n de las variables restantes
 ##Only edgeD and FC correlated and prep -> Pr_seasonality
 ##############################################################
 names(spatial)
 var<-spatial[,c(4,6,7,9:18,29,34:37)]
 names(var)
-rav<-cor(var, method= "spearman")  ###corelaciÛn tipo pearson
+rav<-cor(var, method= "spearman")  ###corelaci√≥n tipo pearson
 
 round(rav,2)
 library(Hmisc)
@@ -167,7 +147,7 @@ spatial$soil.s<-scale(spatial$soilQ, scale=T)
 spatial$div_area.s<-scale(spatial$div_area.mean, scale=T) ###Ojo variable del paisaje
 
 
-#SelecciÛn de modelos
+#Selecci√≥n de modelos
 require(MuMIn)
 require(lme4)
 require(nlme)
@@ -252,7 +232,7 @@ CVlucas_log<-lme(CV~poly(FC.log,2)*log(edgeT)+log(crop_cover)+prepCV,
 
 
 
-### Model selection accounting for multicollinearity ##21h56 ->  atÈ as  =  min to run the model 
+### Model selection accounting for multicollinearity ##21h56 ->  at√© as  =  min to run the model 
 options(na.action = na.fail)
 model <- CVmodel## Define model to be used
 Allmodels <- dredge(model, rank = "AIC")#, m.lim=c(0, 3), extra= c(max.r)) ###Run dredge specifying the number of predictor variables and including the max.r function
